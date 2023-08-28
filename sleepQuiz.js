@@ -212,6 +212,9 @@ const numberInputs = document.querySelectorAll('input[type="number"]');
 numberInputs.forEach(input => {
     input.addEventListener("keypress", (e) => checkKey(e, input));
     input.addEventListener("input", (e) => checkValue(e, input));
+    let nextButton = input.parentNode.parentNode.getElementsByTagName("a")[0];
+    nextButton.style.backgroundColor = "#0b2889";
+    nextButton.removeAttribute("disabled");
 });
 
 function checkValue(e, input) {
