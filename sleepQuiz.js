@@ -151,6 +151,9 @@ const goToNextSlide = function(input) {
 const goToPreviousSlide = function() {
     const currentSlide = document.querySelector(".w-slide:not([aria-hidden])");
     const currentSlideIndex = parseInt(currentSlide.getAttribute("aria-label").split(" ")[0]);
+    if (currentSlide == "1") {
+    return ;
+    }
     if (lifemomentSlides.includes(currentSlideIndex)) {
     showSlide(4);
     } else {
