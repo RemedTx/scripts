@@ -154,17 +154,17 @@ const goToPreviousSlide = function() {
     if (currentSlideIndex == 0) {
     return ;
     }
-    if (lifemomentSlides.includes(currentSlideIndex)) {
-    showSlide(4);
+    if (lifemomentSlides.includes(String(currentSlideIndex))) {
+        showSlide(4);
     } else {
-    leftArrow.click();
+        leftArrow.click();
     };
-    if (feedbackSlides.includes(currentSlideIndex)) {
+    if (feedbackSlides.includes(String(currentSlideIndex))) {
     changeHeader("bar");
-    } else if (feedbackSlides.includes(String(parseInt(currentSlideIndex) - 1))) {
+    } else if (feedbackSlides.includes(String(currentSlideIndex - 1))) {
     changeHeader("logo");
     }
-    if (currentSlideIndex == "10") {
+    if (currentSlideIndex == 9) {
     changeTitle("DEMOGRAPHIC PROFILE");
     }
     updateLoadingBar();
