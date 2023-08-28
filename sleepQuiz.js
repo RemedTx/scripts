@@ -159,6 +159,7 @@ const goToPreviousSlide = function(input) {
     if (input.getAttribute("slideIndex") == "10") {
     changeTitle("DEMOGRAPHIC PROFILE");
     }
+    updateLoadingBar();
 };
 
 function showSlide(index) {
