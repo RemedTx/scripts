@@ -112,9 +112,13 @@ const lifemomentSlides = ["4", "5", "6", "7", "8", "9", "10"];
 
 function updateLoadingBar() {
     const currentSlide = document.querySelector(".w-slide:not([aria-hidden])");
-    const currentSlideIndex = currentSlide.getAttribute("aria-label").split(" ")[0];
-    const totalSlides = currentSlide.getAttribute("aria-label").split(" ")[2] * 2.5;
-    const percentage = (currentSlideIndex / totalSlides) * 100;
+    const totalSlides = 100;
+    let currentSlideIndex = parseInt(currentSlide.getAttribute("aria-label").split(" ")[0]);
+    // Between 1-10 : 0 - 25% -> 10 ELEMENTS
+    // Between 11-27 : 25 - 50% -> 16 ELEMENTS
+    const percentage = Math.round(
+        currentSlideIndex > 10 ? currentSlideIndex * 25 / 10 : 25 + currentSlideIndex * 25 / 16
+    )
     document.getElementById('loading-bar').setAttribute("style",`display:flex;width:${percentage}%`);
     document.getElementById('loading-bar').style.width=`${percentage}%`;
 }
