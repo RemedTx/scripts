@@ -112,8 +112,7 @@ const lifemomentSlides = ["4", "5", "6", "7", "8", "9", "10"];
 
 function updateLoadingBar() {
     const currentSlide = document.querySelector(".w-slide:not([aria-hidden])");
-    const totalSlides = 100;
-    let currentSlideIndex = parseInt(currentSlide.getAttribute("aria-label").split(" ")[0]);
+    const currentSlideIndex = parseInt(currentSlide.getAttribute("aria-label").split(" ")[0]);
     // Between 1-10 : 0 - 25% -> 10 ELEMENTS
     // Between 11-27 : 25 - 50% -> 16 ELEMENTS
     const percentage = Math.round(
@@ -149,18 +148,20 @@ const goToNextSlide = function(input) {
 };
 
     // Automate next slide
-const goToPreviousSlide = function(input) {
-    if (lifemomentSlides.includes(input.getAttribute("slideIndex"))) {
+const goToPreviousSlide = function() {
+    const currentSlide = document.querySelector(".w-slide:not([aria-hidden])");
+    const currentSlideIndex = parseInt(currentSlide.getAttribute("aria-label").split(" ")[0]);
+    if (lifemomentSlides.includes(currentSlideIndex)) {
     showSlide(4);
     } else {
     leftArrow.click();
     };
-    if (feedbackSlides.includes(input.getAttribute("slideIndex"))) {
+    if (feedbackSlides.includes(currentSlideIndex)) {
     changeHeader("bar");
-    } else if (feedbackSlides.includes(String(parseInt(input.getAttribute("slideIndex")) - 1))) {
+    } else if (feedbackSlides.includes(String(parseInt(currentSlideIndex) - 1))) {
     changeHeader("logo");
     }
-    if (input.getAttribute("slideIndex") == "10") {
+    if (currentSlideIndex == "10") {
     changeTitle("DEMOGRAPHIC PROFILE");
     }
     updateLoadingBar();
