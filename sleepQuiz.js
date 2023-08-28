@@ -150,8 +150,8 @@ const goToNextSlide = function(input) {
     // Automate next slide
 const goToPreviousSlide = function() {
     const currentSlide = document.querySelector(".w-slide:not([aria-hidden])");
-    const currentSlideIndex = parseInt(currentSlide.getAttribute("aria-label").split(" ")[0]);
-    if (currentSlideIndex == "1") {
+    const currentSlideIndex = parseInt(currentSlide.getAttribute("aria-label").split(" ")[0]) - 1;
+    if (currentSlideIndex == 0) {
     return ;
     }
     if (lifemomentSlides.includes(currentSlideIndex)) {
