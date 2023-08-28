@@ -216,7 +216,6 @@ numberInputs.forEach(input => {
 
 function checkValue(e, input) {
     let nextButton = input.parentNode.parentNode.getElementsByTagName("a")[0];
-    console.log(input.value.length);
     if (input.value === '') {
     nextButton.style.backgroundColor = "#dfdfdf";
     nextButton.setAttribute("disabled", "disabled");
