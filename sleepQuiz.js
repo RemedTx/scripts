@@ -2,6 +2,7 @@
 // FORM DIVS BUILD
 
 const lottieSrc = "https://uploads-ssl.webflow.com/63fce3115f364af903bc6796/64e5fd4fc9d7fd6aab7a12ca_animation_llm8shsu.json"
+const lottieSrc2 = "https://uploads-ssl.webflow.com/63fce3115f364af903bc6796/64edf6a33060781430b6cf9f_loaderText.json"
 const slackUrl = "https://europe-west1-test-firebase-1240d.cloudfunctions.net/postSlackMessage";
 const formPushUrl = "https://europe-west1-test-firebase-1240d.cloudfunctions.net/sleepQuiz";
 
@@ -242,10 +243,6 @@ function checkKey(e, input) {
     }
 };
 
-// Progress bar animation
-
-$('#lottie-container').html(`<lottie-player autoplay mode="normal" speed=0.4 style="width: 400px"></lottie-player>`);
-
 // Post function
 
 async function postRequest(url, data) {
@@ -263,22 +260,29 @@ let data = {
 postRequest(slackUrl, data);
 }
 
-const loaderContainer = document.getElementById("final-progress");
+// Progress bar animation
+$('#lottie-container').html(`<lottie-player autoplay mode="normal" speed=0.4 style="width: 400px"></lottie-player>`);
+$('#lottie-container-2').html(`<lottie-player autoplay mode="normal" speed=1 style="width: 600px"></lottie-player>`);
+
+
 
 // Before email
 $('#final-button').on('click', function() {
-loaderContainer.style.display = 'block';
-const player = document.querySelector("lottie-player");
-player.load(lottieSrc);
-setTimeout(() => {
-    loaderContainer.style.display = 'none';
-}, 10000);
-sendSlack(false, "Unknown User");
+    let loaderContainer = document.getElementById("final-progress");
+    loaderContainer.style.display = 'block';
+    const player = document.querySelector("lottie-player");
+    const player2 = document.querySelector("lottie-player-2")
+    player.load(lottieSrc);
+    player2.load(lottieSrc2);
+    setTimeout(() => {
+        loaderContainer.style.display = 'none';
+    }, 10000);
+    sendSlack(false, "Unknown User");
 })
 
 // After email
 $('.email-next-button').on('click', function(){
-let error = "";
+    let error = "";
     const inputs = $('input:not([aria-hidden])');
     const emailInputs = $(inputs).filter('[type="email"]').toArray();
     if (emailInputs.length > 0 && !emailInputs.some((el) => $(el).val().indexOf('@') !== -1 && $(el).val().indexOf('.') !== -1)) {
