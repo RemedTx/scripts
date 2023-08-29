@@ -271,7 +271,7 @@ $('#final-button').on('click', function() {
     let loaderContainer = document.getElementById("final-progress");
     loaderContainer.style.display = 'block';
     const player = document.querySelector("lottie-player");
-    const player2 = document.querySelector("lottie-player-2")
+    const player2 = document.querySelector("#lottie-container-2 lottie-player");
     player.load(lottieSrc);
     player2.load(lottieSrc2);
     setTimeout(() => {
