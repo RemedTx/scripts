@@ -275,7 +275,7 @@ $('#final-button').on('click', function() {
     player.load(lottieSrc);
     setTimeout(() => {
         loaderContainer.style.display = 'none';
-    }, 10000);
+    }, 15000);
 
     // Send slack
     sendSlack(false, "Unknown User");
@@ -294,11 +294,11 @@ $('.email-next-button').on('click', function(){
 
     // If not error -> submit form
     if (!error) {
-    sendSlack(true, emailInputs[0].value);
-    postRequest(formPushUrl, {data: {"email": emailInputs[0].value}});
-    document.forms[0].submit();
-    error = "";
-    } 
+        sendSlack(true, emailInputs[0].value);
+        postRequest(formPushUrl, {data: {"email": emailInputs[0].value}});
+        document.forms[0].submit();
+        error = "";
+    }
     
     else {
     alert(error);
