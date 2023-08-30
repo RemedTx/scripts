@@ -1,8 +1,7 @@
 
 // FORM DIVS BUILD
 
-const lottieSrc = "https://uploads-ssl.webflow.com/63fce3115f364af903bc6796/64e5fd4fc9d7fd6aab7a12ca_animation_llm8shsu.json"
-const lottieSrc2 = "https://uploads-ssl.webflow.com/63fce3115f364af903bc6796/64edf6a33060781430b6cf9f_loaderText.json"
+const lottieSrc = "https://lottie.host/186d5b64-22b9-4c26-9068-8d0b40cbef57/UC2tpZmJA6.json"
 const slackUrl = "https://europe-west1-test-firebase-1240d.cloudfunctions.net/postSlackMessage";
 const formPushUrl = "https://europe-west1-test-firebase-1240d.cloudfunctions.net/sleepQuiz";
 
@@ -246,54 +245,62 @@ function checkKey(e, input) {
 // Post function
 
 async function postRequest(url, data) {
-const response = await fetch(url, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+    const response = await fetch(url, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
 }
 
 function sendSlack(submitted, email) {
-let data = {
-    userName: email,
-    warningType: 'QUIZ',
-    warningContent: submitted? 'Someone submitted the form!' : 'Someone went to the final question!',
-    emoji: ':ghost:',
-    redirectUrl: 'https://www.moonalisa.co',
-};
-postRequest(slackUrl, data);
+    let data = {
+        userName: email,
+        warningType: 'QUIZ',
+        warningContent: submitted? 'Someone submitted the form!' : 'Someone went to the final question!',
+        emoji: ':ghost:',
+        redirectUrl: 'https://www.moonalisa.co',
+    };
+    postRequest(slackUrl, data);
 }
 
 // Progress bar animation
-$('#lottie-container').html(`<lottie-player autoplay mode="normal" speed=0.4 style="width: 400px"></lottie-player>`);
-$('#lottie-container-2').html(`<lottie-player autoplay mode="normal" speed=1 style="width: 600px"></lottie-player>`);
+$('#lottie-container').html(`<lottie-player autoplay mode="normal" speed=1 style="width: 400px"></lottie-player>`);
 
 
 
-// Before email
+// Last button before email
 $('#final-button').on('click', function() {
+    // Display animation container
     let loaderContainer = document.getElementById("final-progress");
     loaderContainer.style.display = 'block';
+
+    // Play animation
     const player = document.querySelector("lottie-player");
-    const player2 = document.querySelector("#lottie-container-2 lottie-player");
     player.load(lottieSrc);
-    player2.load(lottieSrc2);
     setTimeout(() => {
         loaderContainer.style.display = 'none';
     }, 10000);
+
+    // Send slack
     sendSlack(false, "Unknown User");
 })
 
-// After email
+// After email input
 $('.email-next-button').on('click', function(){
+
+    // Check for errors
     let error = "";
     const inputs = $('input:not([aria-hidden])');
     const emailInputs = $(inputs).filter('[type="email"]').toArray();
     if (emailInputs.length > 0 && !emailInputs.some((el) => $(el).val().indexOf('@') !== -1 && $(el).val().indexOf('.') !== -1)) {
           error = "Please enter a valid email";
     }
+
+    // If not error -> submit form
     if (!error) {
     sendSlack(true, emailInputs[0].value);
     postRequest(formPushUrl, {data: {"email": emailInputs[0].value}});
     document.forms[0].submit();
     error = "";
-    } else {
+    } 
+    
+    else {
     alert(error);
     }
 });
