@@ -366,7 +366,7 @@ const FormAbandonmentTracker = {
     clearFormHistory: function() {
       this.$formHistory = [];
     }
-  }
+  };
   (function(){
-    FormAbandonmentTracker.init(gtag, 'onboarding-form', 'Onboarding Form', 'FormAbandonment');
+    FormAbandonmentTracker.init('onboarding-form', 'Onboarding Form', 'FormAbandonment');
   })();
