@@ -171,6 +171,11 @@ $('.next-button').on('click', function(){
         error = "Please enter a number";
     }
 
+    const textInputs = $(inputs).filter('[type="text"]').toArray();
+    if (textInputs.length > 0 && textInputs.some((el) => $(el).val() == "")) {
+        error = "Please fill in the blank";
+    }
+
     error? alert(error) : goToNextSlide();
 });
 
