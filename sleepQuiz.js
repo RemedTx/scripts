@@ -139,13 +139,11 @@ updateLoadingBar();
 const goToNextSlide = function(input) {
     let currentSlideIndex = getCurrentSlideIndex();
 
-    console.log("current slide Index :", currentSlideIndex);
-
     if (currentSlideIndex == slides.length) {
         return;
     }else if (currentSlideIndex == 4) {
         showSlide(mappingLifeMoment[input.value]);
-    } else if ((4 <= currentSlideIndex) && (currentSlideIndex <= 10)) {
+    } else if ((currentSlideIndex >= 4) && (currentSlideIndex <= 10)) {
         showSlide(11);
         changeTitle("SLEEP PROFILE");
     } else {
@@ -292,7 +290,8 @@ function validateEmailForm() {
     // If not error -> submit form
     if (!error) {
         sendSlack(true, emailInputs[0].value);
-        postRequest(formPushUrl, {data: {"email": emailInputs[0].value}});
+        // postRequest(formPushUrl, {data: {"email": emailInputs[0].value}});
+        navigator.sendBeacon(postFormUrl, JSON.stringify({sheet: 1, data: {"email": emailInputs[0].value}}));
         document.forms[0].submit();
         error = "";
     }
@@ -358,7 +357,6 @@ const FormAbandonmentTracker = {
     //     'event_category': this.$eventCategory,
     //     'event_label': 'Fields with input: ' + joined_history,
     //     'event_callback': function() {
-    //       console.log("Data sent to Google.");
     //     }
     //   });
       postRequest("https://europe-west1-test-firebase-1240d.cloudfunctions.net/postForm", {sheet: 0, data: joined_history});
@@ -367,6 +365,7 @@ const FormAbandonmentTracker = {
       this.$formHistory = [];
     }
   };
-  (function(){
-    FormAbandonmentTracker.init('onboarding-form', 'Onboarding Form', 'FormAbandonment');
-  })();
+
+(function(){
+FormAbandonmentTracker.init('onboarding-form', 'Onboarding Form', 'FormAbandonment');
+})();
