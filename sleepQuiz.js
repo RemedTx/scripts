@@ -278,7 +278,7 @@ $('#final-button').on('click', function() {
 $('.email-next-button').on('click', validateEmailForm);
 
 function validateEmailForm() {
-    const formPushUrl = "https://europe-west1-test-firebase-1240d.cloudfunctions.net/postForm";
+    const formPushUrl = "https://europe-west1-test-firebase-1240d.cloudfunctions.net/sleepQuiz";
 
     // Check for errors
     let error = "";
