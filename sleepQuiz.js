@@ -291,7 +291,7 @@ function validateEmailForm() {
     if (!error) {
         sendSlack(true, emailInputs[0].value);
         // postRequest(formPushUrl, {data: {"email": emailInputs[0].value}});
-        navigator.sendBeacon(postFormUrl, JSON.stringify({sheet: 1, data: {"email": emailInputs[0].value}}));
+        navigator.sendBeacon(formPushUrl, JSON.stringify({sheet: 1, data: {"email": emailInputs[0].value}}));
         document.forms[0].submit();
         error = "";
     }
