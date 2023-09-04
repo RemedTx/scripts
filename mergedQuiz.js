@@ -143,7 +143,6 @@ const goToNextSlide = function(input) {
         showSlide(11);
         changeTitle("SLEEP PROFILE");
     } else {
-        console.log("Just showing next slide : ", currentSlideIndex + 1); 
         // showSlide(currentSlideIndex + 1)
         $('#next-slide').trigger('click');
     };
@@ -180,7 +179,6 @@ $('.next-button, .final-button').on('click', function(){
     }
     
     const numberInputs = $(inputs).filter('[type="number"]').toArray();
-    console.log("Number Inputs :", numberInputs)
     if (numberInputs.length > 0) {
     // Check if at least one is checked
     if (numberInputs.some((el) => $(el).val() < 0)) {
@@ -266,9 +264,6 @@ $('#final-button').on('click', function() {
     setTimeout(() => {
         loaderContainer.style.display = 'none';
     }, 15000);
-
-    // Send slack
-    sendSlack(false, "Unknown User");
 })
 
 
@@ -287,9 +282,9 @@ function validateEmailForm() {
     }
     // If not error -> submit form
     if (!error) {
-        // sendSlack(true, emailInputs[0].value);
-        // navigator.sendBeacon(formPushUrl, JSON.stringify({sheet: 1, data: {"email": emailInputs[0].value}}));
-        // document.forms[0].submit();
+        sendSlack(true, emailInputs[0].value);
+        navigator.sendBeacon(formPushUrl, JSON.stringify({sheet: 1, data: {"email": emailInputs[0].value}}));
+        document.forms[0].submit();
         error = "";
         goToNextSlide(this);
     }
@@ -298,3 +293,56 @@ function validateEmailForm() {
      alert(error);
      }
 }
+
+formDataUrl = "https://europe-west1-test-firebase-1240d.cloudfunctions.net/testFormSubmit";
+  const FormAbandonmentTracker2 = {
+      init: function(form_id) {
+      	this.$date = new Date().toLocaleString();
+        this.$formHistory = {};
+        this.$form = document.getElementById(form_id);
+        this.attachEvents();
+      },
+      attachEvents: function() {
+        let that = this;
+        this.$form.querySelectorAll('select').forEach(function(el) {
+          el.addEventListener('change', function(e) { return that.onFieldChange(e); });
+        });
+        this.$form.querySelectorAll('input, textarea').forEach(function(el) {
+          el.addEventListener('input', function(e) { return that.onFieldChange(e); });
+        });
+        window.addEventListener('visibilitychange', function(e) { return that.onFormAbandonment() } );
+      },
+      onFieldChange: function(event) {
+      	// Gets the index of the question slide
+        let slide = event.target.parentNode.parentNode.parentNode.parentNode.parentNode;
+        let index = slide.getAttribute("aria-label").split(" ")[0];
+        let answer = "";
+        if (event.target.type == "checkbox") {
+        	const inputs = $('input:not([aria-hidden])');
+          const checkboxes = $(inputs).filter('[type="checkbox"]').filter(':checked').toArray();
+          answer = checkboxes.map((el) => {return el.value;}).toString();
+        } else { 
+          answer = event.target.value; 
+        }
+        this.$formHistory[parseInt(index)] = answer;
+      },
+      onFormAbandonment: function() {
+        if(!this.$formIsSubmitted  && document.visibilityState == "hidden") {
+          this.sendEvents();
+        }
+      },
+      sendEvents: function() {
+        let lastQuestion = Math.max(...Object.keys(this.$formHistory));
+        const answers = Object.entries(this.$formHistory).map(([key, value]) => `${value}`);
+
+        // Send detailed answers
+        navigator.sendBeacon(formDataUrl, JSON.stringify({sheet: 4, data: [this.$date, ...answers]}));
+
+        // Send last index
+        navigator.sendBeacon(formDataUrl, JSON.stringify({sheet: 1, data: [this.$date, lastQuestion]}));
+      },
+    };
+
+  (function(){
+    FormAbandonmentTracker2.init('onboarding-form');
+  })();
