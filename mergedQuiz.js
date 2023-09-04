@@ -232,9 +232,8 @@ const numberInputs = document.querySelectorAll('input[type="number"]');
 numberInputs.forEach(input => {
     input.addEventListener("keypress", (e) => checkKey(e, input));
     input.addEventListener("input", (e) => checkValue(e, input));
-    let nextButton = input.parentNode.parentNode.getElementsByTagName("a")[0];
-    nextButton.style.backgroundColor = "#dfdfdf";
-    nextButton.setAttribute("disabled", "disabled");
+    // initialize next buttons
+    checkValue(null, input);
 });
 
 // Post function
@@ -299,46 +298,3 @@ function validateEmailForm() {
      alert(error);
      }
 }
-
-
-formDataUrl = "https://europe-west1-test-firebase-1240d.cloudfunctions.net/testFormSubmit";
-  const FormAbandonmentTracker2 = {
-      init: function(form_id) {
-      	this.$date = new Date().toLocaleString();
-        this.$formHistory = {};
-        this.$form = document.getElementById(form_id);
-        this.attachEvents();
-      },
-      attachEvents: function() {
-        let that = this;
-        this.$form.querySelectorAll('select').forEach(function(el) {
-          el.addEventListener('change', function(e) { return that.onFieldChange(e); });
-        });
-        this.$form.querySelectorAll('input, textarea').forEach(function(el) {
-          el.addEventListener('input', function(e) { return that.onFieldChange(e); });
-        });
-        window.addEventListener('visibilitychange', function(e) { return that.onFormAbandonment() } );
-      },
-      onFieldChange: function(event) {
-      	// Gets the index of the question slide
-        let name = event.target.parentNode.parentNode.parentNode.parentNode.parentNode;
-        let index = name.getAttribute("aria-label").split(" ")[0];
-        let answer = event.target.value;
-        this.$formHistory[parseInt(index)] = answer;
-      },
-      onFormAbandonment: function() {
-        if(!this.$formIsSubmitted  && document.visibilityState == "hidden") {
-          this.sendEvents();
-        }
-      },
-      sendEvents: function() {
-        let lastQuestion = Math.max(...Object.keys(this.$formHistory));
-        // navigator.sendBeacon(formDataUrl, JSON.stringify({sheet: 1, data: [this.$date, lastQuestion]}));
-        const answers = Object.entries(this.$formHistory).map(([key, value]) => `${key}: ${value}`);
-        navigator.sendBeacon(formDataUrl, JSON.stringify({sheet: 4, data: [this.$date, ...answers]}));
-      },
-    };
-
-  (function(){
-    FormAbandonmentTracker2.init('onboarding-form');
-  })();
