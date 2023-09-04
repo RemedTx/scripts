@@ -284,7 +284,6 @@ function validateEmailForm() {
     if (!error) {
         sendSlack(true, emailInputs[0].value);
         navigator.sendBeacon(formPushUrl, JSON.stringify({sheet: 1, data: {"email": emailInputs[0].value}}));
-        document.forms[0].submit();
         error = "";
         goToNextSlide(this);
     }
