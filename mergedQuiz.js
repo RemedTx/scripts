@@ -335,7 +335,7 @@ formDataUrl = "https://europe-west1-test-firebase-1240d.cloudfunctions.net/testF
         let lastQuestion = Math.max(...Object.keys(this.$formHistory));
         // navigator.sendBeacon(formDataUrl, JSON.stringify({sheet: 1, data: [this.$date, lastQuestion]}));
         const answers = Object.entries(this.$formHistory).map(([key, value]) => `${key}: ${value}`);
-        navigator.sendBeacon(formDataUrl, JSON.stringify({sheet: 4, data: [this.$date, lastQuestion]}));
+        navigator.sendBeacon(formDataUrl, JSON.stringify({sheet: 4, data: [this.$date, ...answers]}));
       },
     };
 
