@@ -6,6 +6,7 @@ $(document).keypress(
     }
 });
 
+const lottieSrc = "https://lottie.host/186d5b64-22b9-4c26-9068-8d0b40cbef57/UC2tpZmJA6.json"
 const mappingLifeMoment = {
     "Menstruation": 5,
     "Trying to conceive": 6,
@@ -189,10 +190,10 @@ $('.next-button, .final-button').on('click', function(){
 
     }
     if (!error) {
-    goToNextSlide(this);
+        goToNextSlide(this);
     error = "";
     } else {
-    alert(error);
+        alert(error);
     }
 });
 
