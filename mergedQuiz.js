@@ -7,6 +7,7 @@ $(document).keypress(
 });
 
 const lottieSrc = "https://lottie.host/186d5b64-22b9-4c26-9068-8d0b40cbef57/UC2tpZmJA6.json"
+const updateContactUrl = "https://europe-west1-test-firebase-1240d.cloudfunctions.net/updateContact"
 const mappingLifeMoment = {
     "Menstruation": 5,
     "Trying to conceive": 6,
@@ -77,6 +78,8 @@ for (let i = 0; i < slides.length; i++) {
     // NUMBER INPUTS
     slide.querySelector("input[type='number']")?.setAttribute("data-name", `${i}`);
     slide.querySelector("input[type='number']")?.setAttribute("name", `${i}`);
+    slide.querySelector('input[type="text"]')?.setAttribute("data-name", `${i}`);
+    slide.querySelector('input[type="text"]')?.setAttribute("name", `${i}`);
 }
 
 function getCurrentSlideIndex() {
@@ -181,14 +184,29 @@ $('.next-button, .final-button').on('click', function(){
     
     const numberInputs = $(inputs).filter('[type="number"]').toArray();
     if (numberInputs.length > 0) {
-    // Check if at least one is checked
-    if (numberInputs.some((el) => $(el).val() < 0)) {
-        error = "Please enter a positive number";
-    } else if (numberInputs.some((el) => $(el).val() == "")) {
-        error = "Please enter a number";
+        if (numberInputs.some((el) => $(el).val() < 0)) {
+            error = "Please enter a positive number";
+        } else if (numberInputs.some((el) => $(el).val() == "")) {
+            error = "Please enter a number";
+        }
     }
 
+    const textInputs = $(inputs).filter('[type="text"]').toArray();
+    if (textInputs.length > 0) {
+        if (textInputs.some((el) => $(el).val() == "")) {
+            error = "Please fill in the blank";
+        }
+        else if (textInputs[0].getAttribute("placeholder") == "Preferred First Name") {
+            postRequest(
+                updateContactUrl, 
+                JSON.stringify({
+                    keyName: "email",
+                    keyValue: this.getAttribute("email"),
+                    newData: {"firstName": textInputs[0].value}
+                }));
+        }
     }
+
     if (!error) {
         goToNextSlide(this);
     error = "";
