@@ -197,11 +197,12 @@ $('.next-button, .final-button').on('click', function(){
             error = "Please fill in the blank";
         }
         else if (textInputs[0].getAttribute("placeholder") == "Preferred First Name") {
+            email = $('input[type="email"]').toArray()[0].value;
             postRequest(
                 updateContactUrl, 
                 JSON.stringify({
-                    keyName: "email",
-                    keyValue: this.getAttribute("email"),
+                    keyName: 'email',
+                    keyValue: email,
                     newData: {"firstName": textInputs[0].value}
                 }));
         }
