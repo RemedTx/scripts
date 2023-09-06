@@ -206,7 +206,6 @@ $('.next-button, .final-button').on('click', function(){
                 }));
         }
     }
-
     if (!error) {
         goToNextSlide(this);
     error = "";
@@ -255,7 +254,11 @@ numberInputs.forEach(input => {
 
 // Post function
 async function postRequest(url, data) {
-    const response = await fetch(url, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+    try {
+        return await fetch(url, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+    } catch (error) {
+        return error;
+    }
 }
 
 function sendSlack(submitted, email) {
