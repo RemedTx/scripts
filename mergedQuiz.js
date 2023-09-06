@@ -305,7 +305,11 @@ function validateEmailForm() {
     // If not error -> submit form
     if (!error) {
         sendSlack(true, emailInputs[0].value);
-        navigator.sendBeacon(formPushUrl, JSON.stringify({sheet: 1, data: {"email": emailInputs[0].value}}));
+        try {
+            navigator.sendBeacon(formPushUrl, JSON.stringify({sheet: 1, data: {"email": emailInputs[0].value}}));
+        } catch (err) {
+            console.log(err);
+        }
         error = "";
         goToNextSlide(this);
     }
@@ -357,10 +361,12 @@ formDataUrl = "https://europe-west1-test-firebase-1240d.cloudfunctions.net/testF
         const answers = Object.entries(this.$formHistory).map(([key, value]) => `${value}`);
 
         // Send detailed answers
-        navigator.sendBeacon(formDataUrl, JSON.stringify({sheet: 4, data: [this.$date, ...answers]}));
-
-        // Send last index
-        navigator.sendBeacon(formDataUrl, JSON.stringify({sheet: 1, data: [this.$date, lastQuestion]}));
+        try {
+            navigator.sendBeacon(formDataUrl, JSON.stringify({sheet: 4, data: [this.$date, ...answers]}));
+            navigator.sendBeacon(formDataUrl, JSON.stringify({sheet: 1, data: [this.$date, lastQuestion]}));
+        } catch (err) {
+            console.log(err);
+        }
       },
     };
 
