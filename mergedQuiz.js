@@ -196,7 +196,7 @@ $('.next-button, .final-button').on('click', function(){
         if (textInputs.some((el) => $(el).val() == "")) {
             error = "Please fill in the blank";
         }
-        else if (textInputs[0].getAttribute("placeholder") == "Preferred First Name") {
+        else if (textInputs[0].getAttribute("placeholder") == "") {
             email = $('input[type="email"]').toArray()[0].value;
             postRequest(
                 updateContactUrl, 
