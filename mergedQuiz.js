@@ -76,9 +76,9 @@ for (let i = 0; i < slides.length; i++) {
     });
 
     // NUMBER INPUTS
-    slide.querySelector("input[type='number']")?.setAttribute("data-name", `${i}`);
+    slide.querySelector("input[type='number']")?.setAttribute("data-name", `'${i}`);
     slide.querySelector("input[type='number']")?.setAttribute("name", `'${i}`);
-    slide.querySelector('input[type="text"]')?.setAttribute("data-name", `${i}`);
+    slide.querySelector('input[type="text"]')?.setAttribute("data-name", `'${i}`);
     slide.querySelector('input[type="text"]')?.setAttribute("name", `'${i}`);
 }
 
